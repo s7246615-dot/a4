@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://metricbraincliff.com/sitemap.xml
