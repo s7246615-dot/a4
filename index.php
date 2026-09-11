@@ -384,7 +384,7 @@
     <div class="grid-3">
       <img src="assets/images/high_altitude_research_campus_quad.jpg" alt="High-altitude research campus quad" style="border-radius:var(--radius-md);border:1px solid var(--color-border);aspect-ratio:4/5;object-fit:cover;">
       <img src="assets/images/cliffside_observatory_pathway.jpg" alt="Cliffside observatory pathway" style="border-radius:var(--radius-md);border:1px solid var(--color-border);aspect-ratio:4/5;object-fit:cover;">
-      <img src="assets/images/faculty_professor_mentorship.jpg" alt="Faculty professor mentorship" style="border-radius:var(--radius-md);border:1px solid var(--color-border);aspect-ratio:4/5;object-fit:cover;">
+      <img src="assets/images/doctoral_cognitive_mentorship_dialogue.jpg" alt="Faculty professor mentorship" style="border-radius:var(--radius-md);border:1px solid var(--color-border);aspect-ratio:4/5;object-fit:cover;">
       <img src="assets/images/neurodiversity_psychometric_table.jpg" alt="Neurodiversity psychometric table" style="border-radius:var(--radius-md);border:1px solid var(--color-border);aspect-ratio:4/5;object-fit:cover;">
       <img src="assets/images/longitudinal_retention_research_cohort.jpg" alt="Longitudinal retention research cohort" style="border-radius:var(--radius-md);border:1px solid var(--color-border);aspect-ratio:4/5;object-fit:cover;">
       <img src="assets/images/hierarchical_mastery_learning_taxonomy.jpg" alt="Hierarchical mastery learning taxonomy" style="border-radius:var(--radius-md);border:1px solid var(--color-border);aspect-ratio:4/5;object-fit:cover;">
